@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Oct 11 02:05:51 2020
+Created on Sat Oct 10 02:18:23 2020
 
 @author: LF
 """
@@ -30,7 +30,7 @@ def ERP_image():
     for channel_number in range(0,30,1):
         plt.cla()
         plt.plot(result_1[:,channel_number])
-        plt.savefig(str(channel_number)+'_lie_25.png', dpi=400, bbox_inches='tight')
+        plt.savefig(str(channel_number)+'_lie.png', dpi=400, bbox_inches='tight')
     return (print('ERP图像已经处理完毕'))
 
 def ordinal_patterns(ts, embdim, embdelay):
@@ -71,18 +71,29 @@ def p_entropy(op):
     max_entropy = np.log(len(ordinal_pat))
     p = np.divide(np.array(ordinal_pat), float(sum(ordinal_pat)))
     return(s_entropy(p)/max_entropy)
-
+'''
+def p_entropy(op):
+    ordinal_pat = op
+    max_entropy = np.log(len(ordinal_pat))
+    sum_ordinal_pat = sum(ordinal_pat)
+    sum_list = []
+    for i in range(0, len(ordinal_pat), 1):
+        sum_list.append(sum_ordinal_pat)
+    p = [a / b for a, b in zip(ordinal_pat, sum_list)]
+    #p = np.divide(np.array(ordinal_pat), float(sum(ordinal_pat)))
+    return(s_entropy(p)/max_entropy)
+'''
 def calculate():
-    for channel_number in range(0,30,1):
+    for channel_number in range(0,1,1):
         PESerial = []
         for TimeWindows in range(0,350,1):
-            ts = result_1[TimeWindows:TimeWindows+25,channel_number]
+            ts = result_1[TimeWindows:TimeWindows+50,channel_number]
             OrdinalPatternsSerial = ordinal_patterns(ts, 4, 1)
             #ShannonEntropy = s_entropy(OrdinalPatternsSerial)
             PE = p_entropy(OrdinalPatternsSerial)  
+            print(PE)
             PESerial.append(PE)
         plt.cla()
         plt.plot(PESerial)
-        plt.savefig(str(channel_number)+'lie_25.png', dpi=400, bbox_inches='tight')
-#ERP_image()
+        plt.savefig(str(channel_number)+'test.png', dpi=400, bbox_inches='tight')
 calculate()
